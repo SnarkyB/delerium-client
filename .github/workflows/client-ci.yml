@@ -94,9 +94,13 @@ jobs:
   # =============================================================================
   # Integration Tests
   # =============================================================================
+  # Note: Integration tests are skipped for PRs and tagged releases
+  # They run only on direct pushes to main/develop branches
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    # Skip on PRs and tagged releases
+    if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -124,9 +128,13 @@ jobs:
   # =============================================================================
   # E2E Tests (Playwright)
   # =============================================================================
+  # Note: E2E tests are skipped for PRs and tagged releases
+  # They run only on direct pushes to main/develop branches
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
+    # Skip on PRs and tagged releases
+    if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -223,9 +231,13 @@ jobs:
 
 # Workflow run summary
 # This workflow:
-# 1. Runs quality checks (lint + type check)
-# 2. Runs unit tests with coverage
-# 3. Runs integration tests
-# 4. Runs E2E tests on Chromium
-# 5. Builds the application
-# 6. Runs security audit
+# 1. Runs quality checks (lint + type check) - Always
+# 2. Runs unit tests with coverage - Always
+# 3. Runs integration tests - Only on push to main/develop (skipped for PRs and tags)
+# 4. Runs E2E tests on Chromium - Only on push to main/develop (skipped for PRs and tags)
+# 5. Builds the application - Always
+# 6. Runs security audit - Always
+#
+# Note: Integration and E2E tests are skipped for:
+#   - Pull requests (to speed up PR checks)
+#   - Tagged releases (refs/tags/*)
