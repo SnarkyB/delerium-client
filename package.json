@@ -2,6 +2,10 @@
   "name": "delerium-client",
   "version": "1.0.1-alpha",
   "description": "Client-side TypeScript for delerium",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marcusb333/delerium"
+  },
   "scripts": {
     "build": "npx tsc",
     "watch": "npx tsc --watch",
